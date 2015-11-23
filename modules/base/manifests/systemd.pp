@@ -7,8 +7,7 @@
 
 class base::systemd {
   exec {'systemctl daemon-reload':
-    command     => 'systemctl daemon-reload',
+    command     => '/bin/systemctl daemon-reload',
     refreshonly => true,
   }
-
 }

@@ -15,22 +15,22 @@ class puppet ($interval) {
     # This script will update the contents of the repository and run puppet-apply
     # locally.
     file { '/usr/bin/git-puppet':
-      ensure  => present,
-      mode    => '0755',
-      content => template('puppet/git-puppet'),
+      ensure => present,
+      mode   => '0755',
+      source => 'puppet:///modules/puppet/git-puppet',
     }
 
     # Systemd unit for Puppet runs
     file { '/usr/lib/systemd/system/git-puppet.service':
       ensure => present,
-      source => 'puppet:///modules/base/git-puppet.service',
+      source => 'puppet:///modules/puppet/git-puppet.service',
       notify => Exec['systemctl daemon-reload'],
     }
 
     # Systemd timer for Puppet runs
     file { '/usr/lib/systemd/system/git-puppet.timer':
       ensure  => present,
-      content => template('puppet/git-puppet.timer.erb'),
+      content => template('puppet/git-puppet.timer'),
       require => File['/usr/lib/systemd/system/git-puppet.service'],
       notify  => Exec['systemctl daemon-reload'],
     }

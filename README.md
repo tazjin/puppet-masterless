@@ -14,13 +14,24 @@ repository.
 To bootstrap this repository on a machine, make sure you have installed
 [Puppet][] as well as [librarian-puppet][].
 
+```
+# On Debian 8+
+apt-get install puppet librarian-puppet git
+
+# On CentOS 7+ (EPEL required)
+yum install epel-release git && yum install puppet
+gem install librarian-puppet
+```
+
 Make sure that the `root` user has an SSH key that can access your git-repo.
 On BitBucket, you can use the deployment-key feature for read-only access keys.
 
 Clone the repository using `git` to the destination folder, `/etc/puppet`. You
 may have to remove this folder first.
 
-`rm -rf /etc/puppet && git clone git@githost.com:company/puppet.git /etc/puppet`
+```
+rm -rf /etc/puppet && git clone git@githost.com:company/puppet.git /etc/puppet
+```
 
 After this, you may proceed by running Puppet manually once. This should set up
 everything:
