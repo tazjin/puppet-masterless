@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -ueo pipefail
+
+readonly PUPPET_DIR="/etc/puppet"
+readonly BRANCH_DESC="${PUPPET_DIR}/deploy-branch"
+if [ -e ${BRANCH_DESC} ]; then
+    readonly DEPLOY_BRANCH=$(<${BRANCH_DESC})
+else
+    readonly DEPLOY_BRANCH="master"
+fi
+
+function update_repository() {
+    echo "Pulling new Puppet repository contents ..."
+    cd "${PUPPET_DIR}"
+    git fetch # Fetch remote branches so we can use 'checkout' on new branches
+    git checkout -f "origin/${DEPLOY_BRANCH}"
+}
+
+function fetch_dependencies() {
+    echo "Fetching Puppet module dependencies..."
+    cd "${PUPPET_DIR}"
+    librarian-puppet install
+}
+
+function run_puppet() {
+    echo "Applying Puppet manifests ..."
+    puppet apply --modulepath /etc/puppet/modules /etc/puppet/manifests
+}
+
+# Run both. If the repository update fails (e.g. if the remote was force-pushed)
+# the script will exit before launching the Puppet agent.
+# There needs to be some kind of alerting in place for this.
+update_repository
+fetch_dependencies
+run_puppet

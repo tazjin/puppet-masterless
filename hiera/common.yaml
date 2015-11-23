@@ -1,0 +1,8 @@
+---
+
+# Classes assigned to all hosts
+classes:
+  - puppet
+
+# Configuration for Puppet setup
+puppet::interval: '30min'

@@ -1,0 +1,4 @@
+Puppetfile.lock
+*~
+deploy-branch
+.librarian/

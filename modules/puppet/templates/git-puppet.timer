@@ -1,0 +1,9 @@
+[Unit]
+Description=Schedule periodic Puppet runs
+
+[Timer]
+OnActiveSec=30
+OnUnitActiveSec=<%= @interval %>
+
+[Install]
+WantedBy=multi-user.target
